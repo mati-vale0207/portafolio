@@ -1,0 +1,8 @@
+/*estilos generales para pagina web con opcion a modificar*/
+body {
+  margin: 0 auto;  /*margen para pagina*/
+  padding: 0; /*relleno de pagina*/
+  overflow-x: hidden;     /* evita scroll horizontal */
+  overflow-y: auto;      /* solo vertical si se necesita automaticamente*/
+  overflow: hidden;  /*elimina la opcion de scroll y ajusta automaticamente los contenedores para que se ajusten a la pantalla*/
+}

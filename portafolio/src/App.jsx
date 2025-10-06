@@ -1,22 +1,28 @@
-import Nav from "./nav";        //navbar
-import Portada from "./portada.jsx";  ///portada
-import "./App.css"; //importacion de css
-import Footer from "./footer.jsx";  //importacion de footer
-/*import About from "./about";   //importacion de sobre mi
-import Proyecto from "./proyecto";   //importacion de proyectos
-import Gal from "./gal"*/  //importacion de galeria o habilidades
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Nav from "./nav";           // Navbar
+import Portada from "./portada.jsx"; // Portada
+import "./App.css";                 // CSS
+import Footer from "./footer.jsx";  // Footer
+import About from "./about.jsx";        // Sobre mí
+// import Proyecto from "./proyecto";   // Proyectos
+// import Gal from "./gal";             // Galería / habilidades
 
-//lista en app.jsx que conecta todos los componentes hacia main.jsx
 export default function App() {
-  return (      //regresa el llamado para los componentes
-    <>
+  return (
+    <Router>
       {/* Navbar fijo arriba */}
       <Nav />
 
-      {/* Portada inicial (card con imagen) */}
-       <Portada>
-       </Portada>
+      {/* Rutas */}
+      <Routes>
+        <Route path="/portada" element={<Portada />} />
+        <Route path="/about" element={<About />} />
+        {/* <Route path="/projects" element={<Proyecto />} /> */}
+        {/* <Route path="/gal" element={<Gal />} /> */}
+      </Routes>
+
+      {/* Footer */}
       <Footer />
-    </>
+    </Router>
   );
 }

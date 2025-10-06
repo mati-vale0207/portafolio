@@ -1,3 +1,7 @@
+import React, { useState } from "react";
+import { AppBar, Toolbar, Button, Menu, MenuItem, Typography } from "@mui/material";
+import { Link } from "react-router-dom"; // Importante para enlaces sin recargar la página
+
 import React from 'react';
 import { styled, alpha, keyframes } from '@mui/material/styles'; //estilos de MUI para crear componentes
 import AppBar from '@mui/material/AppBar';  //appbar de mui
@@ -65,7 +69,14 @@ export default function Portada() {
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));  //variable para pantallas grandes segunel tema de mui con las anteriores
 
   //array con las secciones del nav
-  const menuItems = ['Inicio', 'Sobre Mi', 'Proyectos', 'Skills', 'Contacto'];
+  const menuItems = [
+  { text: 'Inicio', path: '/' },
+  { text: 'Sobre Mi', path: '/about' },
+  { text: 'Proyectos', path: '/projects' },
+  { text: 'Skills', path: '/skills' },
+  { text: 'Contacto', path: '/contact' },
+];
+
 
   //funcion para abrir y cerrar el menu movil
   const toggleMenu = () => setMenuOpen(!menuOpen);

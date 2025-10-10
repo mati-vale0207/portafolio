@@ -1,6 +1,7 @@
 import { Box, Typography, IconButton } from "@mui/material";  //importaciones de mui
-import { GitHub, LinkedIn, Twitter } from "@mui/icons-material"; //iconos de mui
+import { GitHub, LinkedIn, Facebook } from "@mui/icons-material"; //iconos de mui
 import { keyframes } from "@mui/material/styles";  //estilos de mui
+import { Link } from "react-router-dom"; 
 
 // Glow Dead Space define una animacion css tagged template tipo plantilla
 //declaa un componente 
@@ -20,7 +21,7 @@ const Footer = () => {
         width: { lg: "1200px" },       //tamano de ancho para pantallas grandes 
         borderRadius: 2,   //borde radial
         mx: "auto",    //margen horizontal para footer en ambos laos
-        mb: 5, // margen de abajo
+        mb: 0, // margen de abajo
         py: 1, // altura de relleno
         px: 2,    //relleno horizontal
         display: "flex",   //distribuye elementos dentro de un contenedor o flexbox para distribuir los hijos
@@ -76,7 +77,7 @@ const Footer = () => {
           <LinkedIn fontSize="small" />
         </IconButton>
         <IconButton
-          href="https://twitter.com/tuusuario"
+          href="https://facebook.com/tuusuario"
           target="_blank"
           sx={{
             color: "#00fff7",
@@ -87,7 +88,7 @@ const Footer = () => {
             },
           }}
         >
-          <Twitter fontSize="small" />
+          <Facebook fontSize="small" />
         </IconButton>
       </Box>
 
@@ -99,8 +100,8 @@ const Footer = () => {
           opacity: 0.8,
         }}
       >
-        <a href="mailto:correo@ejemplo.com" style={{ color: "#00fff7" }}>
-          correo@ejemplo.com
+        <a href="mailto:polarisx@polarisx.space" style={{ color: "#00fff7" }}>
+          polarisx@polarisx.space
         </a>
       </Typography>
     </Box>

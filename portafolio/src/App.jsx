@@ -1,27 +1,23 @@
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Nav from "./nav";           // Navbar
+import Nav from "./nav.jsx";         // Navbar
 import Portada from "./portada.jsx"; // Portada
-import "./App.css";                 // CSS
-import Footer from "./footer.jsx";  // Footer
-import About from "./about.jsx";        // Sobre mí
-// import Proyecto from "./proyecto";   // Proyectos
-// import Gal from "./gal";             // Galería / habilidades
+import About from "./about.jsx";     // Sobre mí
+import Proyecto from "./proyecto";
+import Skills from "./skills.jsx";
+import "./App.css";
+import Footer from "./footer.jsx";
 
 export default function App() {
   return (
     <Router>
-      {/* Navbar fijo arriba */}
-      <Nav />
-
-      {/* Rutas */}
+      <Nav /> {/* Navbar fijo arriba */}
       <Routes>
-        <Route path="/portada" element={<Portada />} />
+        <Route path="/" element={<Portada />} />
         <Route path="/about" element={<About />} />
-        {/* <Route path="/projects" element={<Proyecto />} /> */}
-        {/* <Route path="/gal" element={<Gal />} /> */}
+        <Route path="/proyecto" element={<Proyecto />} />
+        <Route path="/skills" element={<Skills />} />
       </Routes>
-
-      {/* Footer */}
       <Footer />
     </Router>
   );

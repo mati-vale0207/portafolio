@@ -1,6 +1,5 @@
 import { StrictMode } from 'react'  //importacion de react
 import { createRoot } from 'react-dom/client'    //renderiza e inicia hacia el navegador
-import './index.css'  //importacion de css
 import App from './App.jsx'   //conexion de app y sus componentes
 
 

@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react"; //hooks de react
 import { Box, Typography, Button } from "@mui/material";  //importaciones de mui
-import nave from "./assets/nave.jpg";   //importacion de imagem
+import nave from "./assets/nave.jpg";   //importacion de imagen
+import { useNavigate } from "react-router-dom";
 
 
 //inicion del componente funcional
@@ -14,6 +15,11 @@ const Portada = () => {
   const [index, setIndex] = useState(0);  //numero de mostrados en el texto activos
   const [deleting, setDeleting] = useState(false);  //booleano que indica si esta en fase de borrado
 
+const navigate = useNavigate();
+
+const handleContact = () => {
+  navigate("/about#contact")
+}
 
   //para la animacion de typewriter 'maquina de escribir'
   useEffect(() => {  //controlo la escritura y borre de texto
@@ -211,13 +217,14 @@ const Portada = () => {
             sx={{
               mt: 1,
               fontSize: {
+                color: "#e0e0e0",
                 xs: "0.9rem",
                 sm: "1rem",
                 md: "1.2rem",
                 lg: "1.4rem",
                 xl: "1.6rem",
               },
-              textShadow: "0 0 5px #00ffff",
+              textShadow: "0 0 8px #00ffff",
               textAlign: "center",
               whiteSpace: { xs: "normal", sm: "normal", md: "nowrap" },  //controla como se comportan los de abaho para evitar desbordes
               overflow: "hidden",
@@ -229,7 +236,7 @@ const Portada = () => {
           </Typography>
 
           {/* Botón pulsante */}
-          <Button  
+          <Button onClick={handleContact}
             variant="contained"
             sx={{   //stilos
               mt: 2,
@@ -243,7 +250,7 @@ const Portada = () => {
               boxShadow: "0 0 10px #00ffff",
               "&:hover": {
                 bgcolor: "#00ffff",
-                color: "black",
+                color: "whitesmoke",
                 transform: "scale(1.05)",
                 boxShadow: "0 0 20px #00ffff, 0 0 30px #00ffff",
               },

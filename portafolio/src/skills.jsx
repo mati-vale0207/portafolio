@@ -1,11 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, ButtonGroup, Button } from "@mui/material";
-import { motion } from "framer-motion";
-import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend } from "chart.js";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Chart as ChartJS,
+  RadialLinearScale,
+  PointElement,
+  LineElement,
+  Filler,
+  Tooltip,
+  Legend,
+} from "chart.js";
 import { Radar } from "react-chartjs-2";
-import { useNavigate } from "react-router-dom";
 
-ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
+ChartJS.register(
+  RadialLinearScale,
+  PointElement,
+  LineElement,
+  Filler,
+  Tooltip,
+  Legend
+);
 
 const skillSets = {
   frontend: {
@@ -25,11 +39,20 @@ const skillSets = {
   },
 };
 
-const AnimatedSkillRadar = () => {
+const Skills = () => {
+  const [booting, setBooting] = useState(true);
   const [currentSet, setCurrentSet] = useState("frontend");
   const [chartData, setChartData] = useState(null);
-  const [booting, setBooting] = useState(true); // controla la animación inicial
 
+  // Simulación del "encendido del sistema"
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setBooting(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Genera los datos del radar según el set actual
   useEffect(() => {
     const { label, data, color } = skillSets[currentSet];
     setChartData({
@@ -47,18 +70,18 @@ const AnimatedSkillRadar = () => {
     });
   }, [currentSet]);
 
-  useEffect(() => {
-    // Simula "sistema encendiendo"
-    const timer = setTimeout(() => setBooting(false), 3000);
-    return () => clearTimeout(timer);
-  }, []);
-
   const options = {
+    responsive: true,
+    maintainAspectRatio: false,
     scales: {
       r: {
-        angleLines: { color: "rgba(0,255,247,0.2)" },
-        grid: { color: "rgba(0,255,247,0.1)" },
-        pointLabels: { color: "#00fff7", font: { size: 13 } },
+        beginAtZero: true,
+        grid: { color: "rgba(0,255,247,0.2)" },
+        angleLines: { color: "rgba(0,255,247,0.1)" },
+        pointLabels: {
+          color: "#00fff7",
+          font: { size: 13 },
+        },
         ticks: { display: false },
       },
     },
@@ -81,56 +104,58 @@ const AnimatedSkillRadar = () => {
         p: 3,
       }}
     >
-      {booting ? (
-        // 🧠 Animación de encendido tipo consola
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            textAlign: "center",
-          }}
-        >
-          <Typography variant="h5" sx={{ textShadow: "0 0 10px #00fff7" }}>
-            INITIALIZING SYSTEM...
-          </Typography>
-
+      <AnimatePresence mode="wait">
+        {booting ? (
           <motion.div
-            initial={{ width: 0 }}
-            animate={{ width: "100%" }}
-            transition={{ duration: 2 }}
-            style={{
-              height: "4px",
-              background: "linear-gradient(90deg, #00fff7, #007bff)",
-              marginTop: "1rem",
-              boxShadow: "0 0 10px #00fff7",
-              borderRadius: "2px",
-              width: "200px",
-            }}
-          ></motion.div>
-
-          <motion.p
+            key="boot"
             initial={{ opacity: 0 }}
-            animate={{ opacity: [0, 1, 0, 1] }}
-            transition={{ duration: 2, repeat: Infinity }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8 }}
             style={{
-              marginTop: "2rem",
-              fontSize: "1rem",
-              opacity: 0.7,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              textAlign: "center",
             }}
           >
-            System boot sequence active...
-          </motion.p>
-        </motion.div>
-      ) : (
-        <>
+            <Typography variant="h5" sx={{ textShadow: "0 0 10px #00fff7" }}>
+              INITIALIZING SYSTEM...
+            </Typography>
+
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: "200px" }}
+              transition={{ duration: 2 }}
+              style={{
+                height: "4px",
+                background: "linear-gradient(90deg, #00fff7, #007bff)",
+                marginTop: "1rem",
+                boxShadow: "0 0 10px #00fff7",
+                borderRadius: "2px",
+              }}
+            ></motion.div>
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 1, 0, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              style={{
+                marginTop: "2rem",
+                fontSize: "1rem",
+                opacity: 0.7,
+              }}
+            >
+              System boot sequence active...
+            </motion.p>
+          </motion.div>
+        ) : (
           <motion.div
+            key="skills"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.2 }}
+            style={{ width: "100%", textAlign: "center" }}
           >
             <Typography
               variant="h4"
@@ -139,59 +164,62 @@ const AnimatedSkillRadar = () => {
                 textShadow: "0 0 20px #00fff7",
                 fontWeight: "bold",
                 letterSpacing: 2,
-                textAlign: "center",
               }}
             >
               🔷 SYSTEM SKILL DIAGNOSTICS
             </Typography>
+
+            <ButtonGroup
+              variant="outlined"
+              sx={{
+                mb: 4,
+                "& .MuiButton-root": {
+                  color: "#00fff7",
+                  borderColor: "#00fff7",
+                  "&:hover": { backgroundColor: "rgba(0,255,247,0.1)" },
+                },
+              }}
+            >
+              <Button onClick={() => setCurrentSet("frontend")}>Frontend</Button>
+              <Button onClick={() => setCurrentSet("backend")}>Backend</Button>
+              <Button onClick={() => setCurrentSet("tools")}>Tools</Button>
+            </ButtonGroup>
+
+            {chartData && (
+              <motion.div
+                key={currentSet}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8 }}
+                style={{
+                  height: 400,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Radar data={chartData} options={options} />
+              </motion.div>
+            )}
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1 }}
+              style={{
+                marginTop: "2rem",
+                fontSize: "1rem",
+                opacity: 0.7,
+              }}
+            >
+              <span style={{ color: skillSets[currentSet].color }}>
+                {skillSets[currentSet].label.toUpperCase()}
+              </span>{" "}
+              system active.
+            </motion.p>
           </motion.div>
-
-          <ButtonGroup
-            variant="outlined"
-            sx={{
-              mb: 4,
-              "& .MuiButton-root": {
-                color: "#00fff7",
-                borderColor: "#00fff7",
-                "&:hover": { backgroundColor: "rgba(0,255,247,0.1)" },
-              },
-            }}
-          >
-            <Button onClick={() => setCurrentSet("frontend")}>Frontend</Button>
-            <Button onClick={() => setCurrentSet("backend")}>Backend</Button>
-            <Button onClick={() => setCurrentSet("tools")}>Tools</Button>
-          </ButtonGroup>
-
-          <motion.div
-            key={currentSet}
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-          >
-            <Box sx={{ width: "90%", maxWidth: 500 }}>
-              {chartData && <Radar data={chartData} options={options} />}
-            </Box>
-          </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.2 }}
-            style={{
-              marginTop: "2rem",
-              fontSize: "1rem",
-              textAlign: "center",
-              opacity: 0.7,
-              letterSpacing: "1px",
-            }}
-          >
-            <span style={{ color: skillSets[currentSet].color }}>
-              {skillSets[currentSet].label.toUpperCase()}
-            </span>{" "}
-            system active.
-          </motion.p>
-        </>
-      )}
+        )}
+      </AnimatePresence>
     </Box>
   );
 };

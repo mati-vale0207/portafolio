@@ -1,31 +1,35 @@
-import React from "react";
-import { Typography, Card, CardContent, Button, Box, Avatar, Stack } from "@mui/material";
-import { styled, keyframes } from "@mui/system";
+import React from "react"; //importacion de react
+import { Typography, Card, CardContent, Button, Box, Avatar, Stack } from "@mui/material"; //importacion de MUI
+import { styled, keyframes } from "@mui/system"; //importacion de MUI
 
-// 🌈 Animaciones
+//  Animaciones o array de efectos de sombras a las cards
 const glow = keyframes`
   0% { box-shadow: 0 0 10px #ff3b3b55, 0 0 20px #00ffff33; }
   50% { box-shadow: 0 0 25px #ff3b3b88, 0 0 40px #00ffff55; }
   100% { box-shadow: 0 0 10px #ff3b3b55, 0 0 20px #00ffff33; }
 `;
 
+//array de efecto de degradado de color para la card
 const gradientShift = keyframes`
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 `;
 
-const scanlines = keyframes`
+//array / efecto de lineas que aparecen en las cards
+const scanlines = keyframes`  
   0% { background-position: 0 0; }
   100% { background-position: 0 40px; }
 `;
 
+//array de efecto tipo flotante de la card en eje Y o vertical
 const float = keyframes`
   0% { transform: translateY(0px); }
   50% { transform: translateY(-8px); }
   100% { transform: translateY(0px); }
 `;
 
+//array de efecto tipo parallay  para fondo de pagina
 const parallaxMove = keyframes`
   0% { background-position: 0 0, 0 0, 0 0; }
   100% { background-position: 200px 100px, -200px 150px, 0px 50px; }
@@ -33,24 +37,24 @@ const parallaxMove = keyframes`
 
 // 🌌 Fondo principal con animación tipo HUD/espacial
 const AboutContainer = styled("div")({
-  position: "relative",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  minHeight: "100vh",
-  backgroundColor: "#000",
-  color: "#e0e0e0",
-  padding: "100px 20px 40px",
-  overflow: "hidden",
-  boxSizing: "border-box",
-  "&::before": {
-    content: '""',
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    background: `
+  position: "relative",  //posicion en relacion con otro
+  display: "flex",  //distribuye elementos dentro de un contenedor
+  flexDirection: "column",  //los distribuye tipo columna
+  alignItems: "center", //alinea los elementos en el eje
+  minHeight: "100vh",   //tamano de viewport
+  backgroundColor: "#000", //color de fondo
+  color: "#e0e0e0",  //color de texto
+  padding: "100px 20px 40px",   //relleno
+  overflow: "hidden", //evita scroll
+  boxSizing: "border-box", //modelo de caja
+  "&::before": {                 //inserta contenido estilizado
+    content: '""',   //se enlaza con  &
+    position: "absolute",    //tipo de posicion
+    top: 0,   //arriba
+    left: 0,  //izquierda
+    width: "100%",  //tmano
+    height: "100%", //ancho y abajofondo estrellado
+    background: `  
       radial-gradient(circle at center, rgba(0,255,255,0.05) 0%, transparent 70%),
       url('https://www.transparenttextures.com/patterns/stardust.png'),
       linear-gradient(180deg, rgba(0,0,0,0.8), rgba(0,0,0,1))

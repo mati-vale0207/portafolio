@@ -22,7 +22,7 @@ const Footer = () => {
         borderRadius: 2,   //borde radial
         mx: "auto",    //margen horizontal para footer en ambos laos
         mb: 0, // margen de abajo
-        py: 1, // altura de relleno
+        py: 0.5, // altura de relleno
         px: 2,    //relleno horizontal
         display: "flex",   //distribuye elementos dentro de un contenedor o flexbox para distribuir los hijos
         alignItems: "center",  //centra verticalmente los elementos dentro del contenedor flex

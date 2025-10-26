@@ -25,7 +25,7 @@ const glow = keyframes`
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',  //posiciona el elemento sin afectar a los otros elementos
   borderRadius: theme.shape.borderRadius,    //border por defecto de mui 
-  backgroundColor: alpha('#00fff7', 0.15),   //color de fondo 
+  backgroundColor: alpha('#00fff7', 0.15),   //color de fondo
   '&:hover': { backgroundColor: alpha('#00fff7', 0.25) },  //hover y color al hacerlo
   display: 'flex',   //posiciona a los elementos en el contenedor
   alignItems: 'center',  //posiciona a los elementos en posicion horizontal
@@ -51,6 +51,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   width: '100%',  //tamaño
 }));
 
+  //efecto parpadeo rapido
+  const flicker = keyframes`
+   0%, 100% { opacity: 1; text-shadow: 0 0 8px #00fff7, 0 0 15px #00fff7; }
+   20%, 60% { opacity: 0.4; text-shadow: none; }
+   40%, 80% { opacity: 1; text-shadow: 0 0 10px #00fff7, 0 0 20px #00fff7; }
+   `;
+
+
 // Estilo para los enlaces
 const StyledListItem = styled(ListItem)(({ theme }) => ({
   fontSize: '1rem',  //tamano de texto
@@ -61,17 +69,22 @@ const StyledListItem = styled(ListItem)(({ theme }) => ({
   fontWeight: 'bold',  //tamano o grosor de texto
   borderRadius: 1,   //borde radial
   transition: 'all 0.3s ease',   //efecto de animacion
+  cursor: 'pointer',
   '&:hover': {
     backgroundColor: alpha('#00fff7', 0.2),  //color de fondo
     boxShadow: '0 0 5px #00fff7, 0 0 3px #00fff7 inset',  //cp;pr de sombra mas inset
     transform: 'scale(1.05)',  //efecto
     animation: `${glow} 2s infinite alternate`,  //efecto
   },
+  '&.flicker': {
+    animation: `${flicker} 0.4s ease-in-out 2`, //parpadea 2 veces rapido
+  },
 }));
 
 
 //inicio de componente nav
 export default function Nav() {
+  const [activeButton, setActiveButton] = React.useState(null);
   const navigate = useNavigate();  //conecta usenavigate con react router   
   const [menuOpen, setMenuOpen] = React.useState(false); //hook de estado que controla el menu
   const theme = useTheme();  //hokk que devuelve tema de MUI
@@ -90,10 +103,17 @@ export default function Nav() {
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
   //conecta react router dom con usenavigate
-  const handleNavigate = (path) => {
-    navigate(path);
-    setMenuOpen(false); // Cierra el menú tras navegar en móvil
+  const handleNavigate = (path, text) => {
+    setActiveButton(text);  //activa parpadeo
+
+    setTimeout(() => {
+      navigate(path);
+      setMenuOpen(false); // Cierra el menú tras navegar en móvil
+      setActiveButton(null);  //limpia animacion despues
+    }, 500);
   };
+
+
 
   //define lo que se mostrara en pantalla
   return (  //estilos de nav
@@ -103,7 +123,8 @@ export default function Nav() {
         sx={{
           mt: 2,   //margin top
           zIndex: theme.zIndex.drawer + 2,   //deja encima de otros elementos 
-          top: 0,  
+          top: 0,
+          py: 0.5,
           left: 0,
           right: 0,
           mx: 'auto',  //margen horizontal
@@ -116,17 +137,18 @@ export default function Nav() {
         }}
       >
 
-      
+
         <Toolbar  //contenedor interno dentro del appbar o nav
           sx={{   //estilos
             display: 'flex',
             justifyContent: { xs: 'space-between', lg: 'center' },  //alinea los elementos a lo largo del eje
             alignItems: 'center',   //centra los elementos en el eje horizontal
             gap: { lg: 1 },   //deja espacio entre los elementos
-            py: 0,   //relleno
-            height: { xs: 50, sm: 50, md: 50, lg: 50 },  //altura segun pantalla
-            minHeight: { xs: 40, sm: 40, md: 40, lg: 40 },  //altura minima segun pantalla
-            px: { xs: 1, sm: 1, lg: 1 },  //relleno horizontal segun pantalla
+            paddingTop: 0,   //relleno
+            paddingBottom: { xs: 0, sm: 0, md: 3, lg: 3 },
+            height: { xs: 50, sm: 50, md: 50, lg: 60 },  //altura segun pantalla
+            minHeight: { xs: 40, sm: 40, md: 50, lg: 60 },  //altura minima segun pantalla
+            px: { xs: 1, sm: 1, lg: 4 },  //relleno horizontal segun pantalla
             flexWrap: 'wrap',  //permite que los elementos se muevan a otra linea si no caben
           }}
         >
@@ -139,13 +161,17 @@ export default function Nav() {
               </Search>
               {/*estilos para barra de busqueda*/}
               <List sx={{ display: 'flex', flexDirection: 'row', color: '#00fff7', gap: 3 }}>
-                {menuItems.map((item) => (     //arreglo con objetos con map para rederizar estilos
-                  <StyledListItem key={item.text} component={Link}  //clave en listas de react
-                    to={item.path} aria-label={`Navegar a ${item.text}`}  //ruta a la que se navegara 
-                    sx={{ cursor: 'pointer'}}>  {/*cambio de cusor*/}
-                    <ListItemText primary={item.text} />   {/*muestra el texto de enlace*/}
+                {menuItems.map((item) => (
+                  <StyledListItem
+                    key={item.text}
+                    onClick={() => handleNavigate(item.path, item.text)}
+                    className={activeButton === item.text ? "flicker" : ""}
+                    aria-label={`Navegar a ${item.text}`}
+                  >
+                    <ListItemText primary={item.text} />
                   </StyledListItem>
                 ))}
+
               </List>
             </Box>
           )}
@@ -154,7 +180,7 @@ export default function Nav() {
           {isHamburger && (
             <>   {/*define en que pantalla aparece el menu hamburguesa*/}
               <Search sx={{ mx: 'auto', width: { xs: '180px', sm: '250px', md: '300px' } }}>
-                <SearchIconWrapper></SearchIconWrapper> 
+                <SearchIconWrapper></SearchIconWrapper>
                 <StyledInputBase placeholder="Buscar…" inputProps={{ 'aria-label': 'search' }} />
               </Search>
               <IconButton
@@ -188,16 +214,17 @@ export default function Nav() {
                 borderTop: '1px solid #00fff7',   //color de borde
               }}
             >
-              {menuItems.map((item) => (      //busca con map el item o elemento
-                <StyledListItem       //se renderiza el elemento para poder navegar segun lo que elija
-                  button
+              {menuItems.map((item) => (
+                <StyledListItem
                   key={item.text}
-                  onClick={() => handleNavigate(item.path)}
+                  onClick={() => handleNavigate(item.path, item.text)}
+                  className={activeButton === item.text ? "flicker" : ""}
                   aria-label={`Navegar a ${item.text}`}
                 >
                   <ListItemText primary={item.text} />
                 </StyledListItem>
               ))}
+
             </List>
           </Collapse>
         )}

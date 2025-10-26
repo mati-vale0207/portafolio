@@ -22,3 +22,5 @@ export default function App() {
     </Router>
   );
 }
+
+//esta exportacion tiene rutas para cambios de ventanas con reac router dom

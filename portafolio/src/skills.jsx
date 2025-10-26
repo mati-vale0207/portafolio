@@ -1,3 +1,4 @@
+//importaciones de react , mui y chart.js
 import React, { useState, useEffect } from "react";
 import { Box, Typography, ButtonGroup, Button } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
@@ -21,24 +22,29 @@ ChartJS.register(
   Legend
 );
 
+//arrays para graficos 
 const skillSets = {
   frontend: {
     label: "Frontend",
-    data: [90, 85, 80, 75, 70, 65],
+    labels: ["HTML", "CSS", "JavaScript", "React", "MUI", "Bootstrap"],
+    data: [90, 80, 50, 50, 60, 80],
     color: "#00fff7",
   },
   backend: {
     label: "Backend",
-    data: [60, 70, 85, 75, 65, 80],
+    labels: ["PHP", "SQL", "MYSQL", "Cargando...", "Cargando..."],
+    data: [30, 50, 40, 90, 90],
     color: "#ff00c8",
   },
   tools: {
     label: "Tools",
-    data: [85, 80, 75, 90, 60, 70],
+    labels: ["Git", "VS Code", "Figma", "GitHub", "Vite", "Cargando...", "Cargando..."],
+    data: [50, 80, 70, 50, 70, 20, 90],
     color: "#00ff85",
   },
 };
 
+//variavle para graficas que pueden cambiar de estado
 const Skills = () => {
   const [booting, setBooting] = useState(true);
   const [currentSet, setCurrentSet] = useState("frontend");
@@ -54,9 +60,9 @@ const Skills = () => {
 
   // Genera los datos del radar según el set actual
   useEffect(() => {
-    const { label, data, color } = skillSets[currentSet];
+    const { label, labels, data, color } = skillSets[currentSet];
     setChartData({
-      labels: ["HTML", "CSS", "JS", "React", "MUI", "Node"],
+      labels,
       datasets: [
         {
           label,
@@ -90,7 +96,7 @@ const Skills = () => {
     },
   };
 
-  return (
+  return (              //estilos generales de skills
     <Box
       sx={{
         minHeight: "100vh",
@@ -101,9 +107,10 @@ const Skills = () => {
         justifyContent: "center",
         color: "#00fff7",
         fontFamily: "'Orbitron', sans-serif",
-        p: 3,
+        mt: 4,
       }}
     >
+      {/*estilos para animacion de cargando pantalla*/}
       <AnimatePresence mode="wait">
         {booting ? (
           <motion.div
@@ -120,7 +127,7 @@ const Skills = () => {
             }}
           >
             <Typography variant="h5" sx={{ textShadow: "0 0 10px #00fff7" }}>
-              INITIALIZING SYSTEM...
+              INICIANDO SISTEMA...
             </Typography>
 
             <motion.div
@@ -136,6 +143,7 @@ const Skills = () => {
               }}
             ></motion.div>
 
+{/*estilos para animacion de inicio en skills*/}
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: [0, 1, 0, 1] }}
@@ -146,7 +154,7 @@ const Skills = () => {
                 opacity: 0.7,
               }}
             >
-              System boot sequence active...
+              Sistema de inicio activado...
             </motion.p>
           </motion.div>
         ) : (
@@ -157,22 +165,23 @@ const Skills = () => {
             transition={{ duration: 1.2 }}
             style={{ width: "100%", textAlign: "center" }}
           >
+            {/*estilos para texto */}
             <Typography
               variant="h4"
               sx={{
-                mb: 4,
+                mb: 1,
                 textShadow: "0 0 20px #00fff7",
                 fontWeight: "bold",
                 letterSpacing: 2,
               }}
             >
-              🔷 SYSTEM SKILL DIAGNOSTICS
+               SISTEMA DE HABILIDADES
             </Typography>
 
             <ButtonGroup
               variant="outlined"
               sx={{
-                mb: 4,
+                mb: 1,
                 "& .MuiButton-root": {
                   color: "#00fff7",
                   borderColor: "#00fff7",
@@ -180,11 +189,14 @@ const Skills = () => {
                 },
               }}
             >
+
+              {/*se combina para variables para botones de cambios de estado*/}
               <Button onClick={() => setCurrentSet("frontend")}>Frontend</Button>
               <Button onClick={() => setCurrentSet("backend")}>Backend</Button>
               <Button onClick={() => setCurrentSet("tools")}>Tools</Button>
             </ButtonGroup>
 
+{/*estilos para graficos*/}
             {chartData && (
               <motion.div
                 key={currentSet}
@@ -201,22 +213,6 @@ const Skills = () => {
                 <Radar data={chartData} options={options} />
               </motion.div>
             )}
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1 }}
-              style={{
-                marginTop: "2rem",
-                fontSize: "1rem",
-                opacity: 0.7,
-              }}
-            >
-              <span style={{ color: skillSets[currentSet].color }}>
-                {skillSets[currentSet].label.toUpperCase()}
-              </span>{" "}
-              system active.
-            </motion.p>
           </motion.div>
         )}
       </AnimatePresence>

@@ -26,12 +26,12 @@ const GlitchTypography = styled(Typography)(({ theme }) => ({
 // Datos de ejemplo para 10 proyectos
 const projects = [
   {
-    title: 'AI Necromorph Simulator',
-    description: 'Simulador de enemigos de Dead Space con IA.',
+    title: 'Tetris',
+    description: 'Juego de Tetris con participacion de ramas.',
     image: 'https://via.placeholder.com/300x200?text=Necromorph+AI',
-    repo: 'https://github.com/tuusuario/proyecto1',
+    repo: 'https://github.com/mati-vale0207/Tetris.git',
     demo: 'https://demo-link.com',
-    category: 'AI',
+    category: 'GAMEf',
   },
   {
     title: 'Halo Ring Builder',
@@ -39,7 +39,7 @@ const projects = [
     image: 'https://via.placeholder.com/300x200?text=Halo+Ring',
     repo: 'https://github.com/tuusuario/proyecto2',
     demo: null,
-    category: '3D',
+    category: 'JAVASCRIPT',
   },
   {
     title: 'Plasma Cutter Game',
@@ -55,7 +55,7 @@ const projects = [
     image: 'https://via.placeholder.com/300x200?text=Spartan+UI',
     repo: 'https://github.com/tuusuario/proyecto4',
     demo: null,
-    category: 'Web',
+    category: 'REACT',
   },
   {
     title: 'Necromorph Tracker',
@@ -63,7 +63,7 @@ const projects = [
     image: 'https://via.placeholder.com/300x200?text=Tracker',
     repo: 'https://github.com/tuusuario/proyecto5',
     demo: 'https://demo-link.com',
-    category: 'AI',
+    category: 'CSS',
   },
   {
     title: 'Halo Weapon Customizer',
@@ -71,7 +71,7 @@ const projects = [
     image: 'https://via.placeholder.com/300x200?text=Weapon+Custom',
     repo: 'https://github.com/tuusuario/proyecto6',
     demo: null,
-    category: '3D',
+    category: 'JAVASCRIPT',
   },
   {
     title: 'Dead Space Log System',
@@ -79,7 +79,7 @@ const projects = [
     image: 'https://via.placeholder.com/300x200?text=Dead+Space+Log',
     repo: 'https://github.com/tuusuario/proyecto7',
     demo: 'https://demo-link.com',
-    category: 'Web',
+    category: 'REACT',
   },
   {
     title: 'Covenant AI Chat',
@@ -87,7 +87,7 @@ const projects = [
     image: 'https://via.placeholder.com/300x200?text=Covenant+Chat',
     repo: 'https://github.com/tuusuario/proyecto8',
     demo: null,
-    category: 'AI',
+    category: 'CSS',
   },
   {
     title: 'Ishimura Explorer',
@@ -95,7 +95,7 @@ const projects = [
     image: 'https://via.placeholder.com/300x200?text=Ishimura',
     repo: 'https://github.com/tuusuario/proyecto9',
     demo: 'https://demo-link.com',
-    category: '3D',
+    category: 'JAVASCRIPT',
   },
   {
     title: 'Master Chief Trainer',
@@ -103,7 +103,7 @@ const projects = [
     image: 'https://via.placeholder.com/300x200?text=Master+Chief',
     repo: 'https://github.com/tuusuario/proyecto10',
     demo: null,
-    category: 'Web',
+    category: 'REACT',
   },
 ];
 
@@ -117,9 +117,16 @@ function Proyecto() {
   const filteredProjects = filter === 'All' ? projects : projects.filter((project) => project.category === filter);
 
   return (
-    <Box sx={{ padding: 4, background: 'url(https://example.com/space-nebula.jpg) no-repeat center/cover', minHeight: '100vh' }}>
+    <Box sx={{
+      padding: 4,
+      background: "url('')",
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      height: '100vh',
+    }}>
       {/* Filtros */}
-      <Box sx={{ mb: 4, textAlign: 'center' }}>
+      <Box sx={{ mb: 4, textAlign: 'center', mt: 15 }}>
         <ButtonGroup variant="contained" color="primary">
           {categories.map((category) => (
             <Button
@@ -154,14 +161,15 @@ function Proyecto() {
                 image={project.image}
                 alt={project.title}
                 loading="lazy" // Lazy loading
-                sx={{ filter: 'brightness(0.8) hue-rotate(180deg)', objectFit: 'cover',
-                    '&:hover': {
-                transform: 'scale(1.05)',
-                boxShadow: '0 0 20px #00FFAA',
-                transition: '0.3s',
-                },
+                sx={{
+                  filter: 'brightness(0.8) hue-rotate(180deg)', objectFit: 'cover',
+                  '&:hover': {
+                    transform: 'scale(1.05)',
+                    boxShadow: '0 0 20px #00FFAA',
+                    transition: '0.3s',
+                  },
 
-                 }}
+                }}
               />
               <CardContent>
                 <GlitchTypography variant="h5" component="div">

@@ -105,14 +105,14 @@ const handleContact = () => {
         sx={{  //estilos
           position: "relative",  //para posicionar elementos 
           width: { xs: "90%", sm: "400px", md: "600px", lg: "700px" },  //ancho responsive
-          height: { xs: "300px", sm: "400px", md: "450px", lg: "450px" },  //altura responsive
+          height: { xs: "300px", sm: "400px", md: "400px", lg: "400px" },  //altura responsive
           borderRadius: 3,  //esquina redondeada
           overflow: "hidden",  //recorta contenido para que no salga de la caja
           backgroundImage: `url(${nave})`,  //imagen
           backgroundSize: "cover", //permite establecer el tamano de imagen de fondo
           backgroundPosition: "center",  //comportamiento para centrar y cubrir la imagen
           boxShadow: '0 0 30px #00fff7',  //sombra de caja
-          mt: 15   //margen superior
+          mt: 15,   //margen superior
           
         }}
       >

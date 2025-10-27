@@ -31,7 +31,7 @@ const projects = [
     image: 'https://via.placeholder.com/300x200?text=Necromorph+AI',
     repo: 'https://github.com/mati-vale0207/Tetris.git',
     demo: 'https://demo-link.com',
-    category: 'GAMEf',
+    category: 'GAME',
   },
   {
     title: 'Halo Ring Builder',
@@ -39,7 +39,7 @@ const projects = [
     image: 'https://via.placeholder.com/300x200?text=Halo+Ring',
     repo: 'https://github.com/tuusuario/proyecto2',
     demo: null,
-    category: 'JAVASCRIPT',
+    category: 'JS',
   },
   {
     title: 'Plasma Cutter Game',
@@ -47,7 +47,7 @@ const projects = [
     image: 'https://via.placeholder.com/300x200?text=Plasma+Cutter',
     repo: 'https://github.com/tuusuario/proyecto3',
     demo: 'https://demo-link.com',
-    category: 'Game',
+    category: 'CSS',
   },
   {
     title: 'Spartan Dashboard',
@@ -55,7 +55,7 @@ const projects = [
     image: 'https://via.placeholder.com/300x200?text=Spartan+UI',
     repo: 'https://github.com/tuusuario/proyecto4',
     demo: null,
-    category: 'REACT',
+    category: 'CSS',
   },
   {
     title: 'Necromorph Tracker',
@@ -71,7 +71,7 @@ const projects = [
     image: 'https://via.placeholder.com/300x200?text=Weapon+Custom',
     repo: 'https://github.com/tuusuario/proyecto6',
     demo: null,
-    category: 'JAVASCRIPT',
+    category: 'JS',
   },
   {
     title: 'Dead Space Log System',
@@ -79,7 +79,7 @@ const projects = [
     image: 'https://via.placeholder.com/300x200?text=Dead+Space+Log',
     repo: 'https://github.com/tuusuario/proyecto7',
     demo: 'https://demo-link.com',
-    category: 'REACT',
+    category: 'CSS',
   },
   {
     title: 'Covenant AI Chat',
@@ -95,7 +95,7 @@ const projects = [
     image: 'https://via.placeholder.com/300x200?text=Ishimura',
     repo: 'https://github.com/tuusuario/proyecto9',
     demo: 'https://demo-link.com',
-    category: 'JAVASCRIPT',
+    category: 'JS',
   },
   {
     title: 'Master Chief Trainer',
@@ -103,7 +103,7 @@ const projects = [
     image: 'https://via.placeholder.com/300x200?text=Master+Chief',
     repo: 'https://github.com/tuusuario/proyecto10',
     demo: null,
-    category: 'REACT',
+    category: 'JS',
   },
 ];
 
@@ -123,7 +123,9 @@ function Proyecto() {
       backgroundRepeat: "no-repeat",
       backgroundSize: "cover",
       backgroundPosition: "center",
-      height: '100vh',
+      minHeight: '100vh',
+      display: "flex",
+      flexDirection: "column",
     }}>
       {/* Filtros */}
       <Box sx={{ mb: 4, textAlign: 'center', mt: 15 }}>

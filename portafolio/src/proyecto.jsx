@@ -4,6 +4,9 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import ImageIcon from '@mui/icons-material/Image';
 import { styled } from '@mui/material/styles';
 import { useNavigate } from "react-router-dom";
+import capturaImg from './assets/captura.png';
+import cardImg from './assets/card.png';
+
 
 // Estilo para efecto glitch
 const GlitchTypography = styled(Typography)(({ theme }) => ({
@@ -26,36 +29,36 @@ const GlitchTypography = styled(Typography)(({ theme }) => ({
 // Datos de ejemplo para 10 proyectos
 const projects = [
   {
-    title: 'Tetris',
-    description: 'Juego de Tetris con participacion de ramas.',
-    image: 'https://via.placeholder.com/300x200?text=Necromorph+AI',
+    title: 'Juego de Tetris',
+    description: 'Hecho con HTML, CSS Y JAVASCRIPT .',
+    image: capturaImg,
     repo: 'https://github.com/mati-vale0207/Tetris.git',
     demo: 'https://demo-link.com',
     category: 'GAME',
   },
   {
-    title: 'Halo Ring Builder',
-    description: 'App para diseñar anillos Halo en 3D.',
-    image: 'https://via.placeholder.com/300x200?text=Halo+Ring',
-    repo: 'https://github.com/tuusuario/proyecto2',
-    demo: null,
+    title: 'Simulacion de Tarjeta de debito',
+    description: 'Hecho con HTML, CSS, JAVASCRIPT Y REACT.',
+    image: cardImg,
+    repo: 'https://github.com/mati-vale0207/tarjeta-credito.git',
+    demo: 'Revision de codigo, no responsive',
     category: 'JS',
   },
   {
-    title: 'Plasma Cutter Game',
-    description: 'Juego 2D inspirado en Dead Space.',
+    title: 'Panel de Restaurante',
+    description: 'Sistema de restaurante basico.',
     image: 'https://via.placeholder.com/300x200?text=Plasma+Cutter',
-    repo: 'https://github.com/tuusuario/proyecto3',
+    repo: 'https://github.com/mati-vale0207/panel_restaurante.git',
     demo: 'https://demo-link.com',
     category: 'CSS',
   },
   {
-    title: 'Spartan Dashboard',
-    description: 'Tablero interactivo estilo Halo.',
+    title: 'Control Parental',
+    description: 'Hecho con React, MUI, HTML Y JAVASCRIPT aun en proceso de desarrollo.',
     image: 'https://via.placeholder.com/300x200?text=Spartan+UI',
-    repo: 'https://github.com/tuusuario/proyecto4',
+    repo: 'https://github.com/mati-vale0207/control-parental..git',
     demo: null,
-    category: 'CSS',
+    category: 'js',
   },
   {
     title: 'Necromorph Tracker',

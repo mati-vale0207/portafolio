@@ -6,6 +6,11 @@ import { styled } from '@mui/material/styles';
 import { useNavigate } from "react-router-dom";
 import capturaImg from './assets/captura.png';
 import cardImg from './assets/card.png';
+import restauranteImg from './assets/restaurante.png';
+import parentalImg from './assets/parental.png';
+import dashImg from './assets/dash.png';
+import gameImg from './assets/game.png';
+import netflixImg from './assets/netflix.png';
 
 
 // Estilo para efecto glitch
@@ -30,58 +35,58 @@ const GlitchTypography = styled(Typography)(({ theme }) => ({
 const projects = [
   {
     title: 'Juego de Tetris',
-    description: 'Hecho con HTML, CSS Y JAVASCRIPT .',
+    description: 'Hecho con HTML, CSS Y JAVASCRIPT.',
     image: capturaImg,
-    repo: 'https://github.com/mati-vale0207/Tetris.git',
-    demo: 'https://demo-link.com',
+    repo: 'https://github.com/David-SpaceX/Tetris.git',
+    demo: 'Revision de codigo unicamente',
     category: 'GAME',
   },
   {
     title: 'Simulacion de Tarjeta de debito',
     description: 'Hecho con HTML, CSS, JAVASCRIPT Y REACT.',
     image: cardImg,
-    repo: 'https://github.com/mati-vale0207/tarjeta-credito.git',
+    repo: 'https://github.com/David-SpaceX/tarjeta-credito.git',
     demo: 'Revision de codigo, no responsive',
     category: 'JS',
   },
   {
     title: 'Panel de Restaurante',
-    description: 'Sistema de restaurante basico.',
-    image: 'https://via.placeholder.com/300x200?text=Plasma+Cutter',
-    repo: 'https://github.com/mati-vale0207/panel_restaurante.git',
+    description: 'Hecho con PHP y Bootstrap, con MYSQL.',
+    image: restauranteImg,
+    repo: 'https://github.com/David-SpaceX/panel_restaurante.git',
     demo: 'https://demo-link.com',
     category: 'CSS',
   },
   {
     title: 'Control Parental',
     description: 'Hecho con React, MUI, HTML Y JAVASCRIPT aun en proceso de desarrollo.',
-    image: 'https://via.placeholder.com/300x200?text=Spartan+UI',
-    repo: 'https://github.com/mati-vale0207/control-parental..git',
-    demo: null,
+    image: parentalImg,
+    repo: 'https://github.com/David-SpaceX/control-parental.git',
+    demo: 'https://parental-control-40851.web.app',
     category: 'js',
   },
   {
-    title: 'Necromorph Tracker',
-    description: 'App para rastrear enemigos en tiempo real.',
-    image: 'https://via.placeholder.com/300x200?text=Tracker',
-    repo: 'https://github.com/tuusuario/proyecto5',
-    demo: 'https://demo-link.com',
+    title: 'Dashboard-sistema-tickets',
+    description: 'Hecho con HTML, Bootstrap y JavaScript.',
+    image: dashImg,
+    repo: 'https://github.com/David-SpaceX/sistema-tickets.git',
+    demo: 'Dashboard con graficas para un sistema de tickets.',
     category: 'CSS',
   },
   {
-    title: 'Halo Weapon Customizer',
-    description: 'Personaliza armas al estilo Halo.',
-    image: 'https://via.placeholder.com/300x200?text=Weapon+Custom',
-    repo: 'https://github.com/tuusuario/proyecto6',
-    demo: null,
+    title: 'Dashboard de videojuegos',
+    description: 'Hecho con HTML, Bootstrap y JavaScript.',
+    image: gameImg,
+    repo: 'https://github.com/David-SpaceX/tienda-de-videojuegos.git',
+    demo: 'Dashboard con cards de videjuegos aun en desarrollo',
     category: 'JS',
   },
   {
-    title: 'Dead Space Log System',
-    description: 'Sistema de logs narrativos interactivos.',
-    image: 'https://via.placeholder.com/300x200?text=Dead+Space+Log',
-    repo: 'https://github.com/tuusuario/proyecto7',
-    demo: 'https://demo-link.com',
+    title: 'Landig page tipo Netflix',
+    description: 'Hecho con React, MUI y VITE.',
+    image: netflixImg,
+    repo: 'https://github.com/David-SpaceX/landing-page.git',
+    demo: 'Plataforma de videos tipo Netflix ',
     category: 'CSS',
   },
   {

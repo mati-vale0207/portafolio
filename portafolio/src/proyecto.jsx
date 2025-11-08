@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import capturaImg from './assets/captura.png';
 import cardImg from './assets/card.png';
 import restauranteImg from './assets/restaurante.png';
-import parentalImg from './assets/parental.png';
 import dashImg from './assets/dash.png';
 import gameImg from './assets/game.png';
 import netflixImg from './assets/netflix.png';
@@ -60,7 +59,7 @@ const projects = [
   {
     title: 'Control Parental',
     description: 'Hecho con React, MUI, HTML Y JAVASCRIPT aun en proceso de desarrollo.',
-    image: parentalImg,
+    image: '',
     repo: 'https://github.com/David-SpaceX/control-parental.git',
     demo: 'https://parental-control-40851.web.app',
     category: 'js',

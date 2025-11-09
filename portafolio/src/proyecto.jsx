@@ -88,6 +88,7 @@ const projects = [
     demo: 'Plataforma de videos tipo Netflix ',
     category: 'CSS',
   },
+  /*
   {
     title: 'Covenant AI Chat',
     description: 'Chatbot inspirado en IA Covenant.',
@@ -111,7 +112,7 @@ const projects = [
     repo: 'https://github.com/tuusuario/proyecto10',
     demo: null,
     category: 'JS',
-  },
+  },*/
 ];
 
 function Proyecto() {

@@ -1,9 +1,10 @@
 /*estilos generales para pagina web con opcion a modificar*/
 body {
   background: linear-gradient(180deg, #0a0a0a, #1a1a1a);
-  margin: 0 auto;  /*margen para pagina*/
+  margin: 0;  /*margen para pagina*/
   padding: 0; /*relleno de pagina*/
   overflow-x: hidden;     /* evita scroll horizontal */
+  height: 100vh;
   overflow-y: auto;      /* solo vertical si se necesita automaticamente*/
 }
 

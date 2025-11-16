@@ -62,7 +62,7 @@ const projects = [
     image: '',
     repo: 'https://github.com/David-SpaceX/control-parental.git',
     demo: 'https://parental-control-40851.web.app',
-    category: 'js',
+    category: 'JS',
   },
   {
     title: 'Dashboard-sistema-tickets',
@@ -87,7 +87,7 @@ const projects = [
     repo: 'https://github.com/David-SpaceX/landing-page.git',
     demo: 'Plataforma de videos tipo Netflix ',
     category: 'CSS',
-  },
+  }
   /*
   {
     title: 'Covenant AI Chat',

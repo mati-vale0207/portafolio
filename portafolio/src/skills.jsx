@@ -13,6 +13,7 @@ import {
 } from "chart.js";
 import { Radar } from "react-chartjs-2";
 
+//registro de componentes de chart.js
 ChartJS.register(
   RadialLinearScale,
   PointElement,
@@ -44,19 +45,37 @@ const skillSets = {
   },
 };
 
-//variavle para graficas que pueden cambiar de estado
+//componente funcional principal
 const Skills = () => {
-  const [booting, setBooting] = useState(true);
-  const [currentSet, setCurrentSet] = useState("frontend");
-  const [chartData, setChartData] = useState(null);
+  const [currentSet, setCurrentSet] = useState("frontend"); //estado para el conjunto activo
+  const [chartData, setChartData] = useState(null); //datos dinámicos del gráfico
 
-  // Simulación del "encendido del sistema"
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setBooting(false);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
+  //efecto de transicion de entrada
+  const pageVariants = {
+    initial: {
+      opacity: 0,
+      y: 50, //se mueve levemente hacia abajo al iniciar
+      filter: "blur(10px)",
+    },
+    animate: {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      transition: {
+        duration: 1.2,
+        ease: "easeOut",
+      },
+    },
+    exit: {
+      opacity: 0,
+      y: -50,
+      filter: "blur(10px)",
+      transition: {
+        duration: 0.8,
+        ease: "easeIn",
+      },
+    },
+  };
 
   // Genera los datos del radar según el set actual
   useEffect(() => {
@@ -76,6 +95,7 @@ const Skills = () => {
     });
   }, [currentSet]);
 
+  //configuración general del radar chart
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -96,7 +116,24 @@ const Skills = () => {
     },
   };
 
-  return (              //estilos generales de skills
+  return ( //estilos generales de skills\\
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentSet}
+          variants={pageVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          style={{
+            display: "flex",
+            flexDirection: "column", // 🔹 ahora se apilan verticalmente
+            alignItems: "center",
+            justifyContent: "center",
+            width: "100%",
+            maxWidth: "700px",
+          }}
+        >
+
     <Box
       sx={{
         minHeight: "100vh",
@@ -107,117 +144,66 @@ const Skills = () => {
         justifyContent: "center",
         color: "#00fff7",
         fontFamily: "'Orbitron', sans-serif",
-        mt: 4,
+        pt: { xs: 8, md: 10 },
+        pb: { xs: 6, md: 8 },
+        px: { xs: 2, sm: 4 },
       }}
     >
-      {/*estilos para animacion de cargando pantalla*/}
-      <AnimatePresence mode="wait">
-        {booting ? (
-          <motion.div
-            key="boot"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8 }}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
+
+          {/*estilos para texto */}
+          <Typography
+            variant="h4"
+            sx={{
+              mb: 2,
+              textShadow: "0 0 20px #00fff7",
+              fontWeight: "bold",
+              letterSpacing: 2,
               textAlign: "center",
             }}
           >
-            <Typography variant="h5" sx={{ textShadow: "0 0 10px #00fff7" }}>
-              INICIANDO SISTEMA...
-            </Typography>
+            SISTEMA DE HABILIDADES
+          </Typography>
 
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: "200px" }}
-              transition={{ duration: 2 }}
-              style={{
-                height: "4px",
-                background: "linear-gradient(90deg, #00fff7, #007bff)",
-                marginTop: "1rem",
-                boxShadow: "0 0 10px #00fff7",
-                borderRadius: "2px",
-              }}
-            ></motion.div>
-
-{/*estilos para animacion de inicio en skills*/}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: [0, 1, 0, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              style={{
-                marginTop: "2rem",
-                fontSize: "1rem",
-                opacity: 0.7,
-              }}
-            >
-              Sistema de inicio activado...
-            </motion.p>
-          </motion.div>
-        ) : (
-          <motion.div
-            key="skills"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.2 }}
-            style={{ width: "100%", textAlign: "center" }}
+          {/*botones de cambio de categoría*/}
+          <ButtonGroup
+            variant="outlined"
+            sx={{
+              mb: 4,
+              "& .MuiButton-root": {
+                color: "#00fff7",
+                borderColor: "#00fff7",
+                "&:hover": { backgroundColor: "rgba(0,255,247,0.1)" },
+              },
+            }}
           >
-            {/*estilos para texto */}
-            <Typography
-              variant="h4"
-              sx={{
-                mb: 1,
-                textShadow: "0 0 20px #00fff7",
-                fontWeight: "bold",
-                letterSpacing: 2,
+            <Button onClick={() => setCurrentSet("frontend")}>Frontend</Button>
+            <Button onClick={() => setCurrentSet("backend")}>Backend</Button>
+            <Button onClick={() => setCurrentSet("tools")}>Tools</Button>
+          </ButtonGroup>
+
+          {/*estilos para graficos*/}
+          {chartData && (
+            <motion.div
+              key={currentSet}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8 }}
+              style={{
+                width: "100%",
+                maxWidth: "450px",
+                height: "400px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
-               SISTEMA DE HABILIDADES
-            </Typography>
-
-            <ButtonGroup
-              variant="outlined"
-              sx={{
-                mb: 1,
-                "& .MuiButton-root": {
-                  color: "#00fff7",
-                  borderColor: "#00fff7",
-                  "&:hover": { backgroundColor: "rgba(0,255,247,0.1)" },
-                },
-              }}
-            >
-
-              {/*se combina para variables para botones de cambios de estado*/}
-              <Button onClick={() => setCurrentSet("frontend")}>Frontend</Button>
-              <Button onClick={() => setCurrentSet("backend")}>Backend</Button>
-              <Button onClick={() => setCurrentSet("tools")}>Tools</Button>
-            </ButtonGroup>
-
-{/*estilos para graficos*/}
-            {chartData && (
-              <motion.div
-                key={currentSet}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8 }}
-                style={{
-                  height: 400,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Radar data={chartData} options={options} />
-              </motion.div>
-            )}
-          </motion.div>
-        )}
+              <Radar data={chartData} options={options} />
+            </motion.div>
+          )}
+          </Box>
+        </motion.div>
       </AnimatePresence>
-    </Box>
   );
-};
+}
 
 export default Skills;

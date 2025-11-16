@@ -49,7 +49,7 @@ const Footer = () => {
       {/* Redes sociales */}
       <Box sx={{ display: "flex", gap: 1 }}>  {/*display flex distribuye los elementos y gap distribuye los espacios en los elementos*/}
         <IconButton   /*inicio de iconos boton circular*/
-          href="https://github.com/tuusuario"  /* github*/
+          href="https://github.com/David-SpaceX"  /* github*/
           target="_blank"  /*enlace hacia otro navegador*/
           sx={{      /*componente de mui para dar estilos*/
             color: "#00fff7",     /*color de iconos*/

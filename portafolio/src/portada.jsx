@@ -1,272 +1,357 @@
-import { useEffect, useState, useRef } from "react"; //hooks de react
-import { Box, Typography, Button } from "@mui/material";  //importaciones de mui
-import nave from "./assets/nave.jpg";   //importacion de imagen
+import { useEffect, useState, useRef } from "react"; // Hooks de React
+import { Box, Typography, Button } from "@mui/material"; // Importaciones de MUI
+import nave from "./assets/nave.jpg"; // Importación de imagen
 import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
-
-//inicion del componente funcional
+// Inicio del componente funcional
 const Portada = () => {
-  const canvasRef = useRef(null);  //referencia al DOM que leugo asigna al camvas ref
+  const canvasRef = useRef(null); // Referencia al DOM que luego asigna al canvas ref
+  const [booting, setBooting] = useState(true); // Estado para mostrar la pantalla de inicio
+
+  // Simulación del "encendido del sistema"
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setBooting(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Animación de texto tipo IA
-  const texts = ["David Cardona", "Full Stack Dev"];  //array con texto
-  const [currentTextIndex, setCurrentTextIndex] = useState(0);  //indice de que texto de array esta activo
-  const [displayedText, setDisplayedText] = useState(""); //texto que renderiza en pantalla por animacion
-  const [index, setIndex] = useState(0);  //numero de mostrados en el texto activos
-  const [deleting, setDeleting] = useState(false);  //booleano que indica si esta en fase de borrado
+  const texts = ["David Cardona", "Full Stack Dev"]; // Array con texto
+  const [currentTextIndex, setCurrentTextIndex] = useState(0); // Índice de qué texto del array está activo
+  const [displayedText, setDisplayedText] = useState(""); // Texto que renderiza en pantalla por animación
+  const [index, setIndex] = useState(0); // Número de caracteres mostrados en el texto activo
+  const [deleting, setDeleting] = useState(false); // Booleano que indica si está en fase de borrado
 
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
-const handleContact = () => {
-  navigate("/about#contact")
-}
+  const handleContact = () => {
+    navigate("/about#contact");
+  };
 
-  //para la animacion de typewriter 'maquina de escribir'
-  useEffect(() => {  //controlo la escritura y borre de texto
-    const speed = 200;  //tieppo base entre cada caracter al escribir
-    const pause = 1200;  //pasua al terminar de escribir
-    let timeout;  //variable para guardar el id de settimeout
-    const currentText = texts[currentTextIndex]; //texto actual a mostrar segun 
+  // Para la animación de typewriter 'máquina de escribir'
+  useEffect(() => { // Controla la escritura y borrado de texto
+    const speed = 200; // Tiempo base entre cada carácter al escribir
+    const pause = 1200; // Pausa al terminar de escribir
+    let timeout; // Variable para guardar el ID de setTimeout
+    const currentText = texts[currentTextIndex]; // Texto actual a mostrar según índice
 
     if (!deleting && index < currentText.length) {
-      timeout = setTimeout(() => {  //si no esta borrando y aun no termina de escribirse
-        setDisplayedText(currentText.slice(0, index + 1));  //agrega un caracter segun el efecto
-        setIndex(index + 1);  //incrementa o agrega texto
+      timeout = setTimeout(() => { // Si no está borrando y aún no termina de escribirse
+        setDisplayedText(currentText.slice(0, index + 1)); // Agrega un carácter según el efecto
+        setIndex(index + 1); // Incrementa o agrega texto
       }, speed);
-    } else if (deleting && index > 0) { // si esta borrando y aun quedan caracteres
+    } else if (deleting && index > 0) { // Si está borrando y aún quedan caracteres
       timeout = setTimeout(() => {
-        setDisplayedText(currentText.slice(0, index - 1));  //quita un caracter
+        setDisplayedText(currentText.slice(0, index - 1)); // Quita un carácter
         setIndex(index - 1);
       }, speed / 2);
-    } else if (!deleting && index === currentText.length) { //si llega al final  y no esta borrando 0
-      timeout = setTimeout(() => setDeleting(true), pause);  //espera el borrado
-        } else if (deleting && index === 0) {    // si no empieza a borrar
-      setDeleting(false);  //para empezar a boorrar
-      setCurrentTextIndex((prev) => (prev + 1) % texts.length);  //pasa alsiguiente texto modulo para reciclar o rotar
+    } else if (!deleting && index === currentText.length) { // Si llega al final y no está borrando
+      timeout = setTimeout(() => setDeleting(true), pause); // Espera para empezar a borrar
+    } else if (deleting && index === 0) { // Si ya borró todo
+      setDeleting(false); // Para empezar a escribir de nuevo
+      setCurrentTextIndex((prev) => (prev + 1) % texts.length); // Pasa al siguiente texto (loop)
     }
 
-    return () => clearTimeout(timeout);   //el efecto se ejectua o el componente se desmonta
-  }, [index, deleting, texts, currentTextIndex]);
+    return () => clearTimeout(timeout); // Limpia el timeout al desmontar
+  }, [index, deleting, currentTextIndex, texts.length]);
 
   // Animación de estrellas/partículas holográficas
-  useEffect(() => {  //efecto que corre al montar animacion del canvas
-    const canvas = canvasRef.current;  //canvas real desde la referencia
-    const ctx = canvas.getContext("2d");  //contexto para dibujar
-    let stars = [];  //array de particulas
-    const numStars = 150;  //cantidad de particulas
+  useEffect(() => { // Efecto que corre al montar la animación del canvas
+    const canvas = canvasRef.current; // Canvas real desde la referencia
+    if (!canvas) return; // Verificación para evitar null ref
 
-    const initStars = () => { //inicio de canvas segun padre
-      canvas.width = canvas.parentElement.offsetWidth; //tamano
-      canvas.height = canvas.parentElement.offsetHeight;  //tamano
-      stars = [];   //inicio de arreglo
-      for (let i = 0; i < numStars; i++) {  //bucle que se ejecuta tantas veces y la varia numstars ya llamada
-        stars.push({   //array con elementos
-          x: Math.random() * canvas.width,  //particulas en el eje X
-          y: Math.random() * canvas.height,  //particulas en el eje Y
-          radius: Math.random() * 1.5,  //tamano de radio aleatorio
-          speed: Math.random() * 0.3,  //velocidad aleatoria
+    const ctx = canvas.getContext("2d"); // Contexto para dibujar
+    let stars = []; // Array de partículas
+    let animationId; // ID del requestAnimationFrame para cleanup
+    const numStars = 150; // Cantidad de partículas
+
+    const initStars = () => { // Inicializa canvas según tamaño del contenedor
+      canvas.width = window.innerWidth; // Ancho completo de ventana
+      canvas.height = window.innerHeight; // Altura completa de ventana
+      stars = []; // Reinicia arreglo
+      for (let i = 0; i < numStars; i++) { // Bucle que genera estrellas
+        stars.push({ // Array con elementos
+          x: Math.random() * canvas.width, // Posición X
+          y: Math.random() * canvas.height, // Posición Y
+          radius: Math.random() * 1.5, // Tamaño aleatorio
+          speed: Math.random() * 0.3, // Velocidad aleatoria
         });
       }
     };
 
-    const animateStars = () => {  //bcle de animacion
-      ctx.clearRect(0, 0, canvas.width, canvas.height);  //borra el frame anterior
-      stars.forEach((s) => {    //para cada estrellla
-        ctx.beginPath();  //dibujan un circulo
-        ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);  //dibujan un circulo
-        ctx.fillStyle = `rgba(0,255,255,${Math.random() * 0.8 + 0.2})`;  //color cyan mas efecto parpadeo aletorio
-        ctx.fill();  //pinta la estrella
-        s.y -= s.speed;  //muve la estrella hacia arriba restando
-        if (s.y < 0) s.y = canvas.height;  //si se sale arrba la reubicas
+    const animateStars = () => { // Bucle de animación
+      ctx.clearRect(0, 0, canvas.width, canvas.height); // Borra el frame anterior
+      stars.forEach((s) => { // Para cada estrella
+        ctx.beginPath(); // Empieza un nuevo dibujo
+        ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2); // Dibuja un círculo
+        ctx.fillStyle = `rgba(0,255,255,${Math.random() * 0.8 + 0.2})`; // Color cyan con parpadeo aleatorio
+        ctx.fill(); // Pinta la estrella
+        s.y -= s.speed; // Mueve la estrella hacia arriba
+        if (s.y < 0) s.y = canvas.height; // Si se sale arriba, reaparece abajo
       });
-      requestAnimationFrame(animateStars);  //vuelve a llamar para el siguiente frame
+      animationId = requestAnimationFrame(animateStars); // Repite para el siguiente frame
     };
 
-    window.addEventListener("resize", initStars);  //calcula tamano e inicia si la ventana cambia de tmano
-    initStars();   //llamada iicial para preparar y arrancar la animacion
-    animateStars();  
+    window.addEventListener("resize", initStars); // Recalcula tamaño al cambiar la ventana
+    initStars(); // Inicia la animación
+    animateStars();
 
-    return () => window.removeEventListener("resize", initStars);  //quita el listener de resize cuando se desmonta el componente
+    return () => { // Cleanup al desmontar
+      window.removeEventListener("resize", initStars);
+      if (animationId) cancelAnimationFrame(animationId);
+    };
   }, []);
 
-  return (  //inicio del jsx
-    <Box  //contenedor principal
-      sx={{  //estilos
-        display: "flex",  //distribuye los elementos dentro del contenedor
-        justifyContent: "center",  //centra horizontalmente el contenido
-        px: { xs: 2, sm: 4, md: 6 },  //relleno horizontal responsive
-        py: { xs: 6, md: 6 }, //relleno vertical responsive
-        minHeight: "80vh",  //altura dela entana minima
-
-      }}
-    >
-      {/* Card principal */}
-      <Box  //contenedor de card
-        sx={{  //estilos
-          position: "relative",  //para posicionar elementos 
-          width: { xs: "90%", sm: "400px", md: "600px", lg: "700px" },  //ancho responsive
-          height: { xs: "300px", sm: "400px", md: "400px", lg: "400px" },  //altura responsive
-          borderRadius: 3,  //esquina redondeada
-          overflow: "hidden",  //recorta contenido para que no salga de la caja
-          backgroundImage: `url(${nave})`,  //imagen
-          backgroundSize: "cover", //permite establecer el tamano de imagen de fondo
-          backgroundPosition: "center",  //comportamiento para centrar y cubrir la imagen
-          boxShadow: '0 0 30px #00fff7',  //sombra de caja
-          mt: 15,   //margen superior
-          
+  // ----------- RETURN PRINCIPAL -----------
+  return (
+    <>
+      {/* Canvas de estrellas (siempre visible) */}
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+          pointerEvents: "none",
+          zIndex: -1,
         }}
-      >
-        {/* Canvas de estrellas */}
-        <canvas
-          ref={canvasRef}  //elemento canvas
-          style={{  //estilo ocupa todo el area del card
-            position: "absolute",  //se poisicion a al su contenedor mas cercano
-            top: 0,   //arriba
-            left: 0,  //izquierda
-            width: "100%",   //ancho
-            height: "100%",   //altura
-            zIndex: 1,     //debaje de overlas/controles superiores
-          }}
-        />
+      />
 
-        {/* Overlay holográfico pulsante */}
-        <Box   //absolute encima del canvas
-          sx={{  //estilos
-            position: "absolute",  //se posiciona a su contenedor mas cercano 
-            top: 0,   //arriba
-            left: 0,  //izquierda
-            width: "100%",  //ancho
-            height: "100%", //altura
-            background:  //color de fondo tipo gradiente
-              "linear-gradient(180deg, rgba(0,255,255,0.08), rgba(0,255,255,0.02))",
-            zIndex: 2,  //con un gradiente translucido
-            animation: "pulseOverlay 3s infinite alternate",  //tipo de animacion 
-            "@keyframes pulseOverlay": {  ////efecto con opacidad
-              "0%": { opacity: 0.6 },
-              "100%": { opacity: 0.3 },
-            },
-          }}
-        />
-
-        {/* Contenido: texto animado + subtítulo + botón */}
-        <Box   //caja
-          sx={{ //estylo
-            position: "absolute",  //se posiciona a su contenedor mas cercano
-            top: "50%",  //sirve para centrar
-            left: "50%",   //ayuda a centrar
-            transform: "translate(-50%, -50%)",  //ayuda a centrar
-            zIndex: 3,  //por encima de overlay y canvas
-            display: "flex",  //posiciona dentro del contenedor
-            flexDirection: "column", //apila elementos erticalmentee
-            alignItems: "center",  //alinea los objetos al centro
-            textAlign: "center",  //alinea el texto horizontalmente
-            px: 2,  //rellno  horizontal
-            gap: 1,  //espacio entre iconos o lista
-          }}
-        >
-          {/* Contenedor del texto animado con ancho fijo para que no mueva subtítulo/botón */}
-          <Box  //caja
-            sx={{  //estilos
-              minWidth: { xs: "180px", sm: "220px", md: "280px", lg: "320px" },  //ancho responsive
-              display: "flex",  //posiciona dentro del contenedor
-              justifyContent: "center",  //los alinea 
+      <AnimatePresence mode="wait">
+        {booting ? (
+          // -------- Pantalla de inicio tipo "sistema cargando" --------
+          <motion.div
+            key="boot"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              textAlign: "center",
+              justifyContent: "center",
+              height: "100vh", // Cambié a height fija para no scroll
+              overflow: "hidden", // Bloquea overflow
+              fontSize: "1rem",
             }}
           >
-            <Typography
-              sx={{
-                fontFamily: "'Orbitron', sans-serif",  //tipo de texto
-                fontWeight: "bold", //tamano de texto 
-                letterSpacing: 2,  //estilos glox
-                color: "#00ffff",
-                textShadow: "0 0 5px #00ffff, 0 0 10px #00ffff",
-                fontSize: {   //reponsive
-                  xs: "1.2rem",
-                  sm: "1.5rem",
-                  md: "2rem",
-                  lg: "2.5rem",
-                  xl: "3rem",
-                },
-                whiteSpace: "nowrap",  //evita que el texto mueva el diseno
-                overflow: "hidden",  //no hace scroll
-                textOverflow: "ellipsis",  //texto dinamico
-                animation: "glowText 2s infinite alternate",  //animacion con estilos
-                "@keyframes glowText": {
-                  "0%": { textShadow: "0 0 5px #00ffff, 0 0 10px #00ffff" },
-                  "100%": { textShadow: "0 0 10px #00ffff, 0 0 20px #00ffff" },
-                },
+            <Typography variant="h5" sx={{ textShadow: "0 0 10px #00fff7" }}>
+              INICIANDO SISTEMA...
+            </Typography>
+
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: "200px" }}
+              transition={{ duration: 2 }}
+              style={{
+                height: "4px",
+                background: "linear-gradient(90deg, #00fff7, #007bff)",
+                marginTop: "1rem",
+                boxShadow: "0 0 10px #00fff7",
+                borderRadius: "2px",
+              }}
+            ></motion.div>
+
+            {/* Estilos para animación de inicio */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 1, 0, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              style={{
+                marginTop: "2rem",
+                fontSize: "1.5rem",
+                opacity: 0.7,
+                color: "antiquewhite",
               }}
             >
-              {displayedText}
-              <Box  //componente span con estilos
-                component="span"  //actua como cursor vertical 
+              Sistema de inicio activado...
+            </motion.p>
+          </motion.div>
+        ) : (
+          // -------- Contenido principal (portada real) --------
+          <motion.div
+            key="main"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.2 }}
+            style={{ width: "100%", textAlign: "center" }}
+          >
+            <Box // Contenedor principal
+              sx={{ // Estilos
+                display: "flex", // Distribuye los elementos dentro del contenedor
+                justifyContent: "center", // Centra horizontalmente
+                px: { xs: 2, sm: 4, md: 6 }, // Relleno horizontal responsive
+                py: { xs: 6, md: 6 }, // Relleno vertical
+                minHeight: "100vh", // Altura completa visible (sin scroll si el contenido cabe)
+                height: "100vh", // Fija la altura para no scroll
+                overflow: "hidden", // Bloquea overflow
+              }}
+            >
+              {/* Card principal */}
+              <Box
                 sx={{
-                  borderRight: "3px solid #00ffff",
-                  ml: 0.5,
-                  animation: "blink 1s infinite",  //simula el cursor de texto
-                  "@keyframes blink": {  //efcto
-                    "0%, 50%, 100%": { opacity: 1 },
-                    "25%, 75%": { opacity: 0 },
-                  },
+                  position: "relative",
+                  width: { xs: "90%", sm: "400px", md: "600px", lg: "700px" },
+                  height: { xs: "300px", sm: "400px", md: "400px", lg: "400px" },
+                  borderRadius: 3,
+                  overflow: "hidden",
+                  backgroundImage: `url(${nave})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  boxShadow: "0 0 30px #00fff7",
+                  mt: 15,
                 }}
-              />
-            </Typography>
-          </Box>
+              >
+                {/* Overlay holográfico pulsante */}
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    background:
+                      "linear-gradient(180deg, rgba(0,255,255,0.08), rgba(0,255,255,0.02))",
+                    zIndex: 2,
+                    animation: "pulseOverlay 3s infinite alternate",
+                    "@keyframes pulseOverlay": {
+                      "0%": { opacity: 0.6 },
+                      "100%": { opacity: 0.3 },
+                    },
+                  }}
+                />
 
-          {/* Subtítulo */}
-          <Typography
-            sx={{
-              mt: 1,
-              fontSize: {
-                color: "#e0e0e0",
-                xs: "0.9rem",
-                sm: "1rem",
-                md: "1.2rem",
-                lg: "1.4rem",
-                xl: "1.6rem",
-              },
-              textShadow: "0 0 8px #00ffff",
-              textAlign: "center",
-              whiteSpace: { xs: "normal", sm: "normal", md: "nowrap" },  //controla como se comportan los de abaho para evitar desbordes
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              maxWidth: { xs: "90%", sm: "90%", md: "100%" },
-            }}
-          >
-            Desarrollador Full Stack  Creando experiencias digitales únicas
-          </Typography>
+                {/* Contenido: texto animado + subtítulo + botón */}
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    zIndex: 3,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    textAlign: "center",
+                    px: 2,
+                    gap: 1,
+                  }}
+                >
+                  {/* Contenedor del texto animado */}
+                  <Box
+                    sx={{
+                      minWidth: { xs: "180px", sm: "220px", md: "280px", lg: "320px" },
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontFamily: "'Orbitron', sans-serif",
+                        fontWeight: "bold",
+                        letterSpacing: 2,
+                        color: "#00ffff",
+                        textShadow: "0 0 5px #00ffff, 0 0 10px #00ffff",
+                        fontSize: {
+                          xs: "1.2rem",
+                          sm: "1.5rem",
+                          md: "2rem",
+                          lg: "2.5rem",
+                          xl: "3rem",
+                        },
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        lineHeight: 1.2, // Para evitar overflows
+                        animation: "glowText 2s infinite alternate",
+                        "@keyframes glowText": {
+                          "0%": { textShadow: "0 0 5px #00ffff, 0 0 10px #00ffff" },
+                          "100%": { textShadow: "0 0 10px #00ffff, 0 0 20px #00ffff" },
+                        },
+                      }}
+                    >
+                      {displayedText}
+                      <Box
+                        component="span"
+                        sx={{
+                          borderRight: "3px solid #00ffff",
+                          ml: 0.5,
+                          animation: "blink 1s infinite",
+                          "@keyframes blink": {
+                            "0%, 50%, 100%": { opacity: 1 },
+                            "25%, 75%": { opacity: 0 },
+                          },
+                        }}
+                      />
+                    </Typography>
+                  </Box>
 
-          {/* Botón pulsante */}
-          <Button onClick={handleContact}
-            variant="contained"
-            sx={{   //stilos
-              mt: 2,
-              bgcolor: "transparent",  //estilos de mui
-              border: "2px solid #00ffff",
-              color: "#00ffff",
-              fontWeight: "bold",
-              px: { xs: 3, md: 4 },
-              py: { xs: 1, md: 1.5 },
-              borderRadius: 2,
-              boxShadow: "0 0 10px #00ffff",
-              "&:hover": {
-                bgcolor: "#00ffff",
-                color: "whitesmoke",
-                transform: "scale(1.05)",
-                boxShadow: "0 0 20px #00ffff, 0 0 30px #00ffff",
-              },
-              animation: "pulseButton 2s infinite alternate",
-              "@keyframes pulseButton": {
-                "0%": { boxShadow: "0 0 10px #00ffff" },
-                "100%": { boxShadow: "0 0 20px #00ffff, 0 0 30px #00ffff" },
-              },
-            }}
-            href="#contacto"
-          >
-            Contáctame
-          </Button>
-        </Box>
-      </Box>
-    </Box>
+                  {/* Subtítulo */}
+                  <Typography
+                    sx={{
+                      mt: 1,
+                      color: "#e0e0e0",
+                      fontSize: {
+                        xs: "0.9rem",
+                        sm: "1rem",
+                        md: "1.2rem",
+                        lg: "1.4rem",
+                        xl: "1.6rem",
+                      },
+                      textShadow: "0 0 8px #00ffff",
+                      textAlign: "center",
+                      whiteSpace: { xs: "normal", sm: "normal", md: "nowrap" },
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      maxWidth: { xs: "90%", sm: "90%", md: "100%" },
+                      lineHeight: 1.3, // Para mejor legibilidad
+                    }}
+                  >
+                    Desarrollador Full Stack — Creando experiencias digitales únicas
+                  </Typography>
+
+                  {/* Botón pulsante */}
+                  <Button
+                    onClick={handleContact}
+                    variant="contained"
+                    sx={{
+                      mt: 2,
+                      bgcolor: "transparent",
+                      border: "2px solid #00ffff",
+                      color: "#00ffff",
+                      fontWeight: "bold",
+                      px: { xs: 3, md: 4 },
+                      py: { xs: 1, md: 1.5 },
+                      borderRadius: 2,
+                      boxShadow: "0 0 10px #00ffff",
+                      "&:hover": {
+                        bgcolor: "#00ffff",
+                        color: "whitesmoke",
+                        transform: "scale(1.05)",
+                        boxShadow: "0 0 20px #00ffff, 0 0 30px #00ffff",
+                      },
+                      animation: "pulseButton 2s infinite alternate",
+                      "@keyframes pulseButton": {
+                        "0%": { boxShadow: "0 0 10px #00ffff" },
+                        "100%": { boxShadow: "0 0 20px #00ffff, 0 0 30px #00ffff" },
+                      },
+                    }}
+                  >
+                    Contáctame
+                  </Button>
+                </Box>
+              </Box>
+            </Box>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid, Card, CardMedia, CardContent, CardActions, Typography, Button, Box, ButtonGroup } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import ImageIcon from '@mui/icons-material/Image';
@@ -10,7 +10,8 @@ import restauranteImg from './assets/restaurante.png';
 import dashImg from './assets/dash.png';
 import gameImg from './assets/game.png';
 import netflixImg from './assets/netflix.png';
-
+import cieloImg from './assets/cielo.jpg';
+import { motion, AnimatePresence } from "framer-motion";
 
 // Estilo para efecto glitch
 const GlitchTypography = styled(Typography)(({ theme }) => ({
@@ -54,7 +55,7 @@ const projects = [
     image: restauranteImg,
     repo: 'https://github.com/David-SpaceX/panel_restaurante.git',
     demo: 'https://demo-link.com',
-    category: 'CSS',
+    category: 'PHP',
   },
   {
     title: 'Control Parental',
@@ -78,7 +79,7 @@ const projects = [
     image: gameImg,
     repo: 'https://github.com/David-SpaceX/tienda-de-videojuegos.git',
     demo: 'Dashboard con cards de videjuegos aun en desarrollo',
-    category: 'JS',
+    category: 'CSS',
   },
   {
     title: 'Landig page tipo Netflix',
@@ -117,6 +118,7 @@ const projects = [
 
 function Proyecto() {
   const [filter, setFilter] = useState('All');
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   // Categorías únicas
   const categories = ['All', ...new Set(projects.map((project) => project.category))];
@@ -124,17 +126,45 @@ function Proyecto() {
   // Filtrar proyectos
   const filteredProjects = filter === 'All' ? projects : projects.filter((project) => project.category === filter);
 
+  //mouse parallax 
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePosition({
+        x: (e.clientX / window.innerWidth - 0.5) * 10, //offset horizontal
+        y: (e.clientY / window.innerHeight - 0.5) * 10,
+      });
+    };
+
+    //throttle para rendimiento
+    let throttled = false;
+    const throttledMouseMove = (e) => {
+      if (!throttled) {
+        requestAnimationFrame(() => {
+          handleMouseMove(e);
+          throttled = false;
+        });
+        throttled = true;
+      }
+    };
+
+    window.addEventListener("mousemove", throttledMouseMove);
+    return () => window.removeEventListener("mousemove", throttledMouseMove);
+  }, []);
+
   return (
     <Box sx={{
       padding: 4,
-      background: "url('')",
-      backgroundRepeat: "no-repeat",
+      background: `url(${cieloImg})`,
       backgroundSize: "cover",
       backgroundPosition: "center",
       minHeight: '100vh',
       display: "flex",
       flexDirection: "column",
-    }}>
+      backgroundAttachment: "fixed",
+      transform: `translate(${mousePosition.x}px, ${mousePosition.y}px)`,
+      transition: "transform 0.1s ease-out", // Suave, bajo impacto
+    }}
+    >
       {/* Filtros */}
       <Box sx={{ mb: 4, textAlign: 'center', mt: 15 }}>
         <ButtonGroup variant="contained" color="primary">
@@ -185,7 +215,7 @@ function Proyecto() {
                 <GlitchTypography variant="h5" component="div">
                   {project.title}
                 </GlitchTypography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="antiquewhite">
                   {project.description}
                 </Typography>
               </CardContent>

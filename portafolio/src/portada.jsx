@@ -136,9 +136,8 @@ const Portada = () => {
               alignItems: "center",
               textAlign: "center",
               justifyContent: "center",
-              height: "100vh", // Cambié a height fija para no scroll
+              height: "95vh", // Altura fija para no scroll
               overflow: "hidden", // Bloquea overflow
-              fontSize: "1rem",
             }}
           >
             <Typography variant="h5" sx={{ textShadow: "0 0 10px #00fff7" }}>
@@ -165,9 +164,9 @@ const Portada = () => {
               transition={{ duration: 2, repeat: Infinity }}
               style={{
                 marginTop: "2rem",
-                fontSize: "1.5rem",
+                fontSize: "1rem",
                 opacity: 0.7,
-                color: "antiquewhite",
+                 color: "antiquewhite",
               }}
             >
               Sistema de inicio activado...
@@ -187,16 +186,17 @@ const Portada = () => {
                 display: "flex", // Distribuye los elementos dentro del contenedor
                 justifyContent: "center", // Centra horizontalmente
                 px: { xs: 2, sm: 4, md: 6 }, // Relleno horizontal responsive
-                py: { xs: 6, md: 6 }, // Relleno vertical
-                minHeight: "100vh", // Altura completa visible (sin scroll si el contenido cabe)
-                height: "100vh", // Fija la altura para no scroll
+                py: { xs: 6, md: 6, lg: 6 }, // Relleno vertical
+                height: "80vh", // Altura fija para no scroll (cambié de minHeight)
                 overflow: "hidden", // Bloquea overflow
+                margin: 0,
               }}
             >
               {/* Card principal */}
               <Box
                 sx={{
                   position: "relative",
+                  zIndex: 1, // Sobre el canvas
                   width: { xs: "90%", sm: "400px", md: "600px", lg: "700px" },
                   height: { xs: "300px", sm: "400px", md: "400px", lg: "400px" },
                   borderRadius: 3,
@@ -205,10 +205,10 @@ const Portada = () => {
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   boxShadow: "0 0 30px #00fff7",
-                  mt: 15,
+                  mt: 18,
                 }}
               >
-                {/* Overlay holográfico pulsante */}
+                {/* Overlay holográfico pulsante (reduce opacidad para ver imagen) */}
                 <Box
                   sx={{
                     position: "absolute",
@@ -217,12 +217,12 @@ const Portada = () => {
                     width: "100%",
                     height: "100%",
                     background:
-                      "linear-gradient(180deg, rgba(0,255,255,0.08), rgba(0,255,255,0.02))",
+                      "linear-gradient(180deg, rgba(0,255,255,0.05), rgba(0,255,255,0.01))", // Reducida opacidad
                     zIndex: 2,
                     animation: "pulseOverlay 3s infinite alternate",
                     "@keyframes pulseOverlay": {
-                      "0%": { opacity: 0.6 },
-                      "100%": { opacity: 0.3 },
+                      "0%": { opacity: 0.4 },
+                      "100%": { opacity: 0.2 },
                     },
                   }}
                 />

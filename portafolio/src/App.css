@@ -4,7 +4,7 @@ body {
   margin: 0;  /*margen para pagina*/
   padding: 0; /*relleno de pagina*/
   overflow-x: hidden;     /* evita scroll horizontal */
-  height: 100vh;
+  height: 100dvh;
   overflow-y: auto;      /* solo vertical si se necesita automaticamente*/
 }
 

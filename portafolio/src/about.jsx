@@ -1,6 +1,8 @@
 import React from "react"; //importacion de react
 import { Typography, Card, CardContent, Button, Box, Avatar, Stack } from "@mui/material"; //importacion de MUI
 import { styled, keyframes } from "@mui/system"; //importacion de MUI
+import { motion, AnimatePresence } from "framer-motion";
+
 
 //  Animaciones o array de efectos de sombras a las cards
 const glow = keyframes`
@@ -41,12 +43,12 @@ const AboutContainer = styled("div")({
   display: "flex",  //distribuye elementos dentro de un contenedor
   flexDirection: "column",  //los distribuye tipo columna
   alignItems: "center", //alinea los elementos en el eje
-  minHeight: "100vh",   //tamano de viewport
+  minHeight: "70vh",   //tamano de viewport
   backgroundColor: "#000", //color de fondo
+  overflow: "visible",
   color: "#e0e0e0",  //color de texto
-  padding: "100px 20px 40px",   //relleno
-  marginTop: "70px",
-  overflow: "hidden", //evita scroll
+  padding: "100px 20px 60px",   //relleno
+  marginTop: "40px",
   boxSizing: "border-box", //modelo de caja
   "&::before": {                 //inserta contenido estilizado
     content: '""',   //se enlaza con  &
@@ -157,10 +159,78 @@ const BtnContainer = styled(Stack)({
   alignItems: "center",
 });
 
+//efecto de transicion para cambio de pantalla
+const hologramVariants= {
+  hidden: {
+    opacity: 0,
+    x: -40,
+    y: -40,
+    skewX: 6,
+    scale: 0.96,
+  },
+  visible: {
+    opacity: 1,
+    x: 0, 
+    y: 0,
+    skewX: 0,
+    scale: 1,
+    transition: {
+      duration: 0.9,
+      ease: "easeOut",
+    }
+  },
+};
+
+const glitchVariants = {
+  visible: {
+    x: [0, -3, 3, -2, 0],  //movimiento rapido
+    opacity: [1, 0.7, 1], //movimiento blink
+    transition: {
+      duration: 0.25,
+      repeat: 1,
+      repeatType: "mirror",
+    },
+  }
+};
+
+
 
 //inicion de renderizacion
 export default function About() {
   return (
+      <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      variants={hologramVariants}
+      style={{
+    width: "100%",
+    minHeight: "70vh",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+        textAlign: "center",
+        border: "1px solid rgba(0,255,255,0.3)",
+        backdropFilter: "blur(9px)",
+        position: "relative",
+
+      }}
+    >
+      {/* Glitch overlay */}
+      <motion.div
+        variants={glitchVariants}
+        initial={false}
+        animate="visible"
+        style={{
+          position: "absolute",
+          inset: 0,
+          pointerEvents: "none",
+          mixBlendMode: "screen",
+        }}
+      />
+
+
+
     <AboutContainer>  {/*contenedor de sobre mi*/}
       {/* Sobre mí */}
       <CardStyled borderColor="#ff3b3b">  {/*estilos para foto*/}
@@ -205,7 +275,7 @@ export default function About() {
         </CardHeader>
         <CardContent>
           <Typography variant="body2" paragraph align="center" sx={{ color: "#e0e0e0" }}>
-            Conecta conmigo a través de tus plataformas favoritas:
+            Conecta conmigo a través de mis redes sociales :
           </Typography>
           <BtnContainer spacing={1}>
             <BtnPrimary variant="contained" href="mailto:polarisx@polarisx.space">
@@ -221,5 +291,6 @@ export default function About() {
         </CardContent>
       </CardStyled>
     </AboutContainer>
+    </motion.div>
   );
 }

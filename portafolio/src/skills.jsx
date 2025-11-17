@@ -126,7 +126,7 @@ const Skills = () => {
           exit="exit"
           style={{
             display: "flex",
-            flexDirection: "column", // 🔹 ahora se apilan verticalmente
+            flexDirection: "column", // ahora se apilan verticalmente
             alignItems: "center",
             justifyContent: "center",
             width: "100%",

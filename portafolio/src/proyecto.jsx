@@ -118,7 +118,6 @@ const projects = [
 
 function Proyecto() {
   const [filter, setFilter] = useState('All');
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   // Categorías únicas
   const categories = ['All', ...new Set(projects.map((project) => project.category))];
@@ -126,128 +125,116 @@ function Proyecto() {
   // Filtrar proyectos
   const filteredProjects = filter === 'All' ? projects : projects.filter((project) => project.category === filter);
 
-  //mouse parallax 
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth - 0.5) * 10, //offset horizontal
-        y: (e.clientY / window.innerHeight - 0.5) * 10,
-      });
-    };
-
-    //throttle para rendimiento
-    let throttled = false;
-    const throttledMouseMove = (e) => {
-      if (!throttled) {
-        requestAnimationFrame(() => {
-          handleMouseMove(e);
-          throttled = false;
-        });
-        throttled = true;
-      }
-    };
-
-    window.addEventListener("mousemove", throttledMouseMove);
-    return () => window.removeEventListener("mousemove", throttledMouseMove);
-  }, []);
-
   return (
-    <Box sx={{
-      padding: 4,
-      background: `url(${cieloImg})`,
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      minHeight: '100vh',
-      display: "flex",
-      flexDirection: "column",
-      backgroundAttachment: "fixed",
-      transform: `translate(${mousePosition.x}px, ${mousePosition.y}px)`,
-      transition: "transform 0.1s ease-out", // Suave, bajo impacto
-    }}
-    >
-      {/* Filtros */}
-      <Box sx={{ mb: 4, textAlign: 'center', mt: 15 }}>
-        <ButtonGroup variant="contained" color="primary">
-          {categories.map((category) => (
-            <Button
-              key={category}
-              onClick={() => setFilter(category)}
-              sx={{
-                backgroundColor: filter === category ? '#00FFAA' : '#1E1E1E',
-                color: filter === category ? '#000' : '#fff',
-                '&:hover': { backgroundColor: '#00FFAA', color: '#000' },
-              }}
-            >
-              {category}
-            </Button>
-          ))}
-        </ButtonGroup>
-      </Box>
-
-      {/* Grid de proyectos */}
-      <Grid container spacing={4}>
-        {filteredProjects.map((project, index) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-            <Card
-              sx={{
-                backgroundColor: 'rgba(30, 30, 30, 0.8)',
-                backdropFilter: 'blur(5px)', // Efecto vidrio esmerilado
-                border: '1px solid #00FFAA',
-              }}
-            >
-              <CardMedia
-                component="img"
-                height="200"
-                image={project.image}
-                alt={project.title}
-                loading="lazy" // Lazy loading
-                sx={{
-                  filter: 'brightness(0.8) hue-rotate(180deg)', objectFit: 'cover',
-                  '&:hover': {
-                    transform: 'scale(1.05)',
-                    boxShadow: '0 0 20px #00FFAA',
-                    transition: '0.3s',
-                  },
-
-                }}
-              />
-              <CardContent>
-                <GlitchTypography variant="h5" component="div">
-                  {project.title}
-                </GlitchTypography>
-                <Typography variant="body2" color="antiquewhite">
-                  {project.description}
-                </Typography>
-              </CardContent>
-              <CardActions>
+   <AnimatePresence mode="wait">
+      <motion.div
+        key="proyectos-page" // Clave única para forzar animación
+        initial={{ opacity: 0, scale: 0.85, y: -60 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.85, y: 60 }}
+        transition={{
+          duration: 0.7,
+          ease: [0.25, 0.46, 0.45, 0.94],
+          staggerChildren: 0.08
+        }}
+        style={{
+          width: "100%",
+          minHeight: "100vh",
+          background: `url(${cieloImg})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        {/* === Filtros === */}
+        <motion.div
+          initial={{ opacity: 0, y: -40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          style={{ textAlign: "center", marginTop: "60px", marginBottom: "2rem" }}
+        >
+          <ButtonGroup variant="contained">
+            {categories.map((cat, i) => (
+              <motion.div
+                key={cat}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.4 + i * 0.05 }}
+                style={{ marginTop: "70px" }}
+              >
                 <Button
-                  size="small"
-                  startIcon={<GitHubIcon />}
-                  href={project.repo}
-                  target="_blank"
-                  rel="noopener"
-                  sx={{ color: '#00FFAA', '&:hover': { color: '#FF4500' } }}
+                  onClick={() => setFilter(cat)}
+                  sx={{
+                    bgcolor: filter === cat ? '#00FFAA' : '#1E1E1E',
+                    color: filter === cat ? '#000' : '#fff',
+                    '&:hover': { bgcolor: '#00FFAA', color: '#000' }
+                  }}
                 >
-                  Repo
+                  {cat}
                 </Button>
-                {project.demo && (
-                  <Button
-                    size="small"
-                    startIcon={<ImageIcon />}
-                    href={project.demo}
-                    target="_blank"
-                    rel="noopener"
-                    sx={{ color: '#00FFAA', '&:hover': { color: '#FF4500' } }}
-                  >
-                    Demo
-                  </Button>
-                )}
-              </CardActions>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
+              </motion.div>
+            ))}
+          </ButtonGroup>
+        </motion.div>
+
+        {/* === Grid de Cards === */}
+        <Grid container spacing={4} component={motion.div} sx={{ px: 4, pb: 4 }}>
+          {filteredProjects.map((project, index) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+              <motion.div
+                initial={{ opacity: 0, y: 60, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ delay: 0.5 + index * 0.08 }}
+                whileHover={{ 
+                  scale: 1.04,
+                  boxShadow: "0 0 30px rgba(0, 255, 255, 0.7)"
+                }}
+              >
+                <Card sx={{
+                  bgcolor: 'rgba(30, 30, 30, 0.85)',
+                  backdropFilter: 'blur(6px)',
+                  border: '1px solid #00FFAA',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column'
+                }}>
+                  <CardMedia
+                    component="img"
+                    height="200"
+                    image={project.image || 'https://via.placeholder.com/300x200?text=No+Image'}
+                    alt={project.title}
+                    sx={{
+                      objectFit: 'cover',
+                      filter: 'brightness(0.8) hue-rotate(180deg)',
+                      transition: '0.3s'
+                    }}
+                  />
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <GlitchTypography variant="h6">{project.title}</GlitchTypography>
+                    <Typography variant="body2" color="antiquewhite" sx={{ mt: 1 }}>
+                      {project.description}
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Button size="small" startIcon={<GitHubIcon />} href={project.repo} target="_blank"
+                      sx={{ color: '#00FFAA', '&:hover': { color: '#FF4500' } }}>
+                      Repo
+                    </Button>
+                    {project.demo && (
+                      <Button size="small" startIcon={<ImageIcon />} href={project.demo} target="_blank"
+                        sx={{ color: '#00FFAA', '&:hover': { color: '#FF4500' } }}>
+                        Demo
+                      </Button>
+                    )}
+                  </CardActions>
+                </Card>
+              </motion.div>
+            </Grid>
+          ))}
+        </Grid>
+      </motion.div>
+    </AnimatePresence>
   );
 }
 

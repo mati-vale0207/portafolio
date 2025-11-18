@@ -124,29 +124,23 @@ const Skills = () => {
           initial="initial"
           animate="animate"
           exit="exit"
-          style={{
-            display: "flex",
-            flexDirection: "column", // ahora se apilan verticalmente
-            alignItems: "center",
-            justifyContent: "center",
-            width: "100%",
-            maxWidth: "700px",
-          }}
         >
 
     <Box
       sx={{
-        minHeight: "100vh",
+        minHeight: "74vh",
         background: "radial-gradient(circle at center, #0a0a0a, #000)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "flex-start",
+        overflow: "hidden",
         color: "#00fff7",
         fontFamily: "'Orbitron', sans-serif",
         pt: { xs: 8, md: 10 },
-        pb: { xs: 6, md: 8 },
+        pb: { xs: 4, md: 4 },
         px: { xs: 2, sm: 4 },
+        mt: 5,
       }}
     >
 
@@ -168,7 +162,7 @@ const Skills = () => {
           <ButtonGroup
             variant="outlined"
             sx={{
-              mb: 4,
+              mb: 1,
               "& .MuiButton-root": {
                 color: "#00fff7",
                 borderColor: "#00fff7",
@@ -189,17 +183,16 @@ const Skills = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8 }}
               style={{
-                width: "100%",
-                maxWidth: "450px",
-                height: "400px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                width: "80%",
+                maxWidth: "400px",
+                height: "350px",
+                pb: 1,
               }}
             >
               <Radar data={chartData} options={options} />
             </motion.div>
           )}
+          <Box sx={{ flexGrow: 1 }} />
           </Box>
         </motion.div>
       </AnimatePresence>

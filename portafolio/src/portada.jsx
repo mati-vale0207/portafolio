@@ -205,7 +205,7 @@ const Portada = () => {
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   boxShadow: "0 0 30px #00fff7",
-                  mt: 18,
+                  mt: 15,
                 }}
               >
                 {/* Overlay holográfico pulsante (reduce opacidad para ver imagen) */}

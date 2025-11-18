@@ -2,6 +2,7 @@ import React from "react"; //importacion de react
 import { Typography, Card, CardContent, Button, Box, Avatar, Stack } from "@mui/material"; //importacion de MUI
 import { styled, keyframes } from "@mui/system"; //importacion de MUI
 import { motion, AnimatePresence } from "framer-motion";
+import fotoImg from "./assets/foto.jpeg";
 
 
 //  Animaciones o array de efectos de sombras a las cards
@@ -235,7 +236,7 @@ export default function About() {
       {/* Sobre mí */}
       <CardStyled borderColor="#ff3b3b">  {/*estilos para foto*/}
         <Avatar
-          src="/placeholder.png"
+          src={fotoImg}
           alt="David Cardona"
           sx={{  //estilos para foto
             width: 150,

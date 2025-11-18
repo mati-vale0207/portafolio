@@ -128,7 +128,7 @@ const Skills = () => {
 
     <Box
       sx={{
-        minHeight: "74vh",
+        minHeight: "72vh",
         background: "radial-gradient(circle at center, #0a0a0a, #000)",
         display: "flex",
         flexDirection: "column",
